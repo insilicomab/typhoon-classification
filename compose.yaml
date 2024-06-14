@@ -1,0 +1,24 @@
+services:
+  typhoon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    ipc: host
+    ports:
+      - 8888:8888
+    volumes:
+      - ./config:/workspace/config
+      - ../data:/workspace/data # bind-mount the data storage folder
+      - ./inputs:/workspace/inputs
+      - ./model:/workspace/model
+      - ./notebooks:/workspace/notebooks
+      - ./outputs:/workspace/outputs
+      - ./src:/workspace/src
+    working_dir: /workspace
