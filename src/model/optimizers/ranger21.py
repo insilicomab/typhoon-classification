@@ -6,7 +6,6 @@ https://github.com/lessw2020/Ranger21/blob/main/LICENSE
 
 """
 
-
 import collections
 import math
 

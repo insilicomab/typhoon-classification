@@ -4,13 +4,16 @@ Specifically, it is a wrapper for wandb or mlflow.
 """
 
 import os
+from enum import Enum
 
 import mlflow
 import wandb
 from pytorch_lightning.loggers import MLFlowLogger, WandbLogger
 
-WANDB = "wandb"
-MLFLOW = "mlflow"
+
+class Logger(Enum):
+    WANDB = "wandb"
+    MLFLOW = "mlflow"
 
 
 class ExperimentTracker:
@@ -23,10 +26,10 @@ class ExperimentTracker:
         self.tracker = self.config.tracker
         self.tracker_name = self.tracker.name
 
-        if self.tracker_name == WANDB:
+        if self.tracker_name == Logger.WANDB.value:
             self.tracker_config = self.tracker.wandb
             self._init_wandb()
-        elif self.tracker_name == MLFLOW:
+        elif self.tracker_name == Logger.MLFLOW.value:
             self.tracker_config = self.tracker.mlflow
             self._init_mlflow()
         else:
@@ -61,21 +64,21 @@ class ExperimentTracker:
 
     @property
     def logger(self):
-        if self.tracker_name == WANDB:
+        if self.tracker_name == Logger.WANDB.value:
             return self.wandb_logger
-        elif self.tracker_name == MLFLOW:
+        elif self.tracker_name == Logger.MLFLOW.value:
             return self.mlflow_logger
 
     def log_metrics(self, metrics):
-        if self.tracker_name == WANDB:
+        if self.tracker_name == Logger.WANDB.value:
             self.wandb_logger.log(metrics)
-        elif self.tracker_name == MLFLOW:
+        elif self.tracker_name == Logger.MLFLOW.value:
             mlflow.log_metrics(metrics)
 
     def log_artifacts(self, artifact_path, base_path=None):
-        if self.tracker_name == WANDB:
+        if self.tracker_name == Logger.WANDB.value:
             wandb.save(artifact_path, base_path=base_path, policy="now")
-        elif self.tracker_name == MLFLOW:
+        elif self.tracker_name == Logger.MLFLOW.value:
             mlflow.log_artifact(artifact_path)
 
 

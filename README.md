@@ -22,7 +22,7 @@ docker compose up -d
 2\. コンテナのシェルを起動する
 
 ```
-docker compose exec -it classification /bin/bash
+docker compose exec -it typhoon /bin/bash
 ```
 
 3\. シェルを使って学習を実行する
