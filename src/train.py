@@ -55,7 +55,7 @@ def main(cfg: DictConfig) -> None:
     )
 
     # train
-    trainer.fit(net, datamodule=datamodule)
+    trainer.fit(net, datamodule=datamodule, ckpt_path=cfg.trainer.ckpt_path)
 
     # test
     trainer.test(net, datamodule=datamodule, ckpt_path="best")
