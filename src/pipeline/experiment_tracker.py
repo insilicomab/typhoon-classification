@@ -51,7 +51,7 @@ class ExperimentTracker:
     def _init_mlflow(self):
         mlflow.set_tracking_uri(self.tracker_config.uri)
         mlflow.set_experiment(self.tracker_config.experiment)
-        mlflow.start_run(run_name=self.tracker_config.run_name)
+        run = mlflow.start_run(run_name=self.tracker_config.run_name)
         mlflow.log_params(
             {
                 "data": os.path.basename(self.tracker.data_dir),
@@ -59,7 +59,9 @@ class ExperimentTracker:
             }
         )
         self.mlflow_logger = MLFlowLogger(
-            experiment_name=self.tracker_config.experiment
+            experiment_name=self.tracker_config.experiment,
+            run_name=self.tracker_config.run_name,
+            run_id=run.info.run_id,
         )
 
     @property
