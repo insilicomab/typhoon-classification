@@ -9,7 +9,7 @@ from dataset.datamodule import DataModule
 from model.callbacks import get_callbacks
 from model.net import Net
 from pipeline.experiment_tracker import ExperimentTracker
-from utils.data_manager import generate_label_map, load_df_from_csv
+from utils.data_manager import load_df_from_csv
 
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
@@ -18,9 +18,7 @@ def main(cfg: DictConfig) -> None:
     train_df, val_df = load_df_from_csv(file_path=cfg.df_path, fold=cfg.fold)
 
     # generate label map
-    label_map = generate_label_map(df=train_df)
-    with open("outputs/label_map.json", "w") as f:
-        json.dump(label_map, f)
+    label_map = cfg.label_map
 
     # set random seed
     pl.seed_everything(seed=cfg.seed, workers=True)

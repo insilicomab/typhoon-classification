@@ -14,39 +14,43 @@ hydra:
 
 ## Experiment Tracker Settings ##
 tracker:
-  name: wandb
+  name: mlflow
   config_name: config.yaml
   data_dir: ${root}
   model_name: ${net.model_name}
   wandb:
     project: typhoon
-    run_name: baseline
+    run_name: convnextv2_tiny.fcmae_ft_in22k_in1k_384-fold0
     tags: []
     notes: ""
   mlflow:
     uri: null
     experiment: typhoon
-    run_name: baseline
+    run_name: convnextv2_tiny.fcmae_ft_in22k_in1k_384-fold0
 
 ## User Settings ##
 root: data/typhoon/train
-df_path: inputs/train_val_kfold_split.csv
-fold: 0 # 0 - 9
+df_path: inputs/train_val_kfold_split_downsampling.csv
+fold: 0 # 0 - 4
 input_channels: 1 # Gray Scale
 num_classes: 2
 image_size: 64
 seed: 0
+label_map: {
+  nonTC: 0,
+  TC: 1,
+}
 
 ## Dataset ##
 train_dataloader:
-  batch_size: 4
+  batch_size: 16
   shuffle: True
   num_workers: 10
   pin_memory: True
   imbalancedDatasetSampler: True
 
 val_dataloader:
-  batch_size: 1
+  batch_size: 512
   shuffle: False # DO NOT CHANGE!!!
   num_workers: 10
   pin_memory: True
@@ -141,7 +145,7 @@ scheduler:
 
 callbacks:
   early_stopping:
-    enable: False
+    enable: True
     monitor: val_MulticlassFBetaScore
     patience: 20
     mode: max
@@ -159,3 +163,4 @@ trainer:
   devices: auto
   accumulate_grad_batches: 16
   deterministic: True
+  ckpt_path:

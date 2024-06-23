@@ -6,7 +6,7 @@ from omegaconf import DictConfig
 
 from dataset.datamodule import DataModule
 from model.net import Net
-from utils.data_manager import generate_label_map, load_df_from_csv
+from utils.data_manager import load_df_from_csv
 
 
 @hydra.main(version_base=None, config_path="../config", config_name="config")
@@ -15,7 +15,7 @@ def main(cfg: DictConfig) -> None:
     train_df, val_df = load_df_from_csv(file_path=cfg.df_path, fold=cfg.fold)
 
     # generate label map
-    label_map = generate_label_map(df=train_df)
+    label_map = cfg.label_map
 
     # set random seed
     pl.seed_everything(seed=cfg.seed, workers=True)
