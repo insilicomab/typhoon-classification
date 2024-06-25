@@ -1,4 +1,3 @@
-import json
 import os
 
 import hydra
@@ -27,7 +26,6 @@ def main(cfg: DictConfig) -> None:
     experiment_tracker = ExperimentTracker(config=cfg)
     experiment_tracker.log_artifacts(f"config/{cfg.tracker.config_name}")
     experiment_tracker.log_artifacts(cfg.df_path)
-    experiment_tracker.log_artifacts("outputs/label_map.json")
 
     # datamodule
     datamodule = DataModule(

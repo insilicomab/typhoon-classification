@@ -23,7 +23,7 @@ def get_tta_transforms():
         [
             tta.HorizontalFlip(),
             tta.VerticalFlip(),
-            tta.Scale(scales=[1, 2, 4]),
+            tta.Rotate90(angles=[0, 180]),
         ]
     )
 
@@ -145,7 +145,7 @@ class TestTransforms:
                 v2.ToImage(),
                 v2.CenterCrop((image_size, image_size)),
                 v2.ToDtype(torch.float32, scale=True),
-                v2.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+                v2.Normalize([0.5], [0.5]),
             ]
         )
 

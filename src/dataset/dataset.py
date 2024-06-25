@@ -69,9 +69,9 @@ def get_inference_dataloader(
     root: str, df_file_path: str, image_size: int
 ) -> DataLoader:
     # read test data
-    df = pd.read_csv(df_file_path)
-    image_path_list = df["image_id"].to_list()
-    label_list = df["label"].to_list()
+    df = pd.read_csv(df_file_path, sep="\t", header=None)
+    image_path_list = df[0].tolist()
+    label_list = df[1].tolist()
 
     # test dataset
     test_dataset = InferenceImageDataset(
@@ -82,6 +82,6 @@ def get_inference_dataloader(
     )
 
     # dataloader
-    test_dataloader = DataLoader(test_dataset, batch_size=1, shuffle=False)
+    test_dataloader = DataLoader(test_dataset, batch_size=2048, shuffle=False)
 
     return test_dataloader
